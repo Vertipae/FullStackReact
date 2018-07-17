@@ -45,32 +45,34 @@ const Osa = (props) => {
 
 const App = () => {
     // Kurssi ei ole olio, vaan osat on
-    const kurssi = 'Half Stack -sovelluskehitys';
-    
-    const osat = [
-        {
-            nimi: 'Reactin perusteet',
-            tehtavia: 10
+    const kurssi = {
+        nimi: 'Half Stack -sovelluskehitys',
 
-        },
+        osat: [
+            {
+                nimi: 'Reactin perusteet',
+                tehtavia: 10
 
-        {
-            nimi: 'Tiedonvälitys propseilla',
-            tehtavia: 7
-        },
+            },
 
-        {
-            nimi: 'Komponenttien tila',
-            tehtavia: 14
-        }
-    ]
+            {
+                nimi: 'Tiedonvälitys propseilla',
+                tehtavia: 7
+            },
+
+            {
+                nimi: 'Komponenttien tila',
+                tehtavia: 14
+            }
+        ]
+    }
 
 
     return (
         <div>
-            <Otsikko kurssi={kurssi} />
-            <Sisalto osat={osat}/>
-            <Yhteensa osat={osat}/>
+            <Otsikko kurssi={kurssi.nimi} />
+            <Sisalto osat={kurssi.osat} />
+            <Yhteensa osat={kurssi.osat} />
             {/* <Sisalto osa={osa1} /> */}
             {/* <Sisalto osa={osa2} /> */}
             {/* <Sisalto osa={osa3} /> */}
