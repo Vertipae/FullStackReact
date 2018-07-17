@@ -11,7 +11,9 @@ const Otsikko = (props) => {
 const Sisalto = (props) => {
     return (
         <div>
-            <Osa osa={props.osa} tehtavia={props.tehtavia} />
+            <Osa osa={props.osat[0]} />
+            <Osa osa={props.osat[1]} />
+            <Osa osa={props.osat[2]} />
         </div>
 
 
@@ -19,10 +21,14 @@ const Sisalto = (props) => {
 }
 
 const Yhteensa = (props) => {
+    let summa = 0;
+    props.osat.forEach(osa => {
+        summa += osa.tehtavia;
+    });
     return (
         <div>
-
-            <p>{props.yht}</p>
+            {/* Summa on käytössä kaikkialla funktion sisällä */}
+            <p>Yhteensä {summa}</p>
 
         </div>
     )
@@ -40,32 +46,35 @@ const Osa = (props) => {
 const App = () => {
     // Kurssi ei ole olio, vaan osat on
     const kurssi = 'Half Stack -sovelluskehitys';
-    // Aikasemmin osa1 oli itsessään reactin perusteet, mutta nyt siihen liittyy nimi ja tehtavamaara
+    
+    const osat = [
+        {
+            nimi: 'Reactin perusteet',
+            tehtavia: 10
 
-    const osa1 = {
-        nimi: 'Reactin perusteet',
-        tehtavia: 10
+        },
 
-    }
+        {
+            nimi: 'Tiedonvälitys propseilla',
+            tehtavia: 7
+        },
 
-    const osa2 = {
-        nimi: 'Tiedonvälitys propseilla',
-        tehtavia: 7
-    }
-
-    const osa3 = {
-        nimi: 'Komponenttien tila',
-        tehtavia: 14
-    }
+        {
+            nimi: 'Komponenttien tila',
+            tehtavia: 14
+        }
+    ]
 
 
     return (
         <div>
             <Otsikko kurssi={kurssi} />
-            <Sisalto osa={osa1} />
-            <Sisalto osa={osa2} />
-            <Sisalto osa={osa3} />
-            <Yhteensa yht={osa1.tehtavia + osa2.tehtavia + osa3.tehtavia} />
+            <Sisalto osat={osat}/>
+            <Yhteensa osat={osat}/>
+            {/* <Sisalto osa={osa1} /> */}
+            {/* <Sisalto osa={osa2} /> */}
+            {/* <Sisalto osa={osa3} /> */}
+            {/* <Yhteensa yht={osa1.tehtavia + osa2.tehtavia + osa3.tehtavia} /> */}
         </div>
     )
 }
