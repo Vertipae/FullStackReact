@@ -11,54 +11,61 @@ const Otsikko = (props) => {
 const Sisalto = (props) => {
     return (
         <div>
-        <Osa osa={props.osa} tehtavia={props.tehtavia}/>
+            <Osa osa={props.osa} tehtavia={props.tehtavia} />
         </div>
-        
-        
+
+
     )
 }
 
 const Yhteensa = (props) => {
     return (
         <div>
-          
-             <p>{props.yht}</p>
-           
+
+            <p>{props.yht}</p>
+
         </div>
     )
 }
 
 const Osa = (props) => {
-return (
-  <div>
-      <p>{props.osa} {props.tehtavia}</p>
+    return (
+        <div>
+            <p>{props.osa.nimi} {props.osa.tehtavia}</p>
 
-    </div>
-)
+        </div>
+    )
 }
 
 const App = () => {
+    // Kurssi ei ole olio, vaan osat on
     const kurssi = 'Half Stack -sovelluskehitys';
-    const osa1 = 'Reactin perusteet';
-    const tehtavia1 = 10;
-    const osa2 = 'Tiedonvälitys propseilla';
-    const tehtavia2 = 7;
-    const osa3 = 'Komponenttien tila';
-    const tehtavia3 = 4;
+    // Aikasemmin osa1 oli itsessään reactin perusteet, mutta nyt siihen liittyy nimi ja tehtavamaara
+
+    const osa1 = {
+        nimi: 'Reactin perusteet',
+        tehtavia: 10
+
+    }
+
+    const osa2 = {
+        nimi: 'Tiedonvälitys propseilla',
+        tehtavia: 7
+    }
+
+    const osa3 = {
+        nimi: 'Komponenttien tila',
+        tehtavia: 14
+    }
+
 
     return (
         <div>
             <Otsikko kurssi={kurssi} />
-            <Sisalto osa={osa1} tehtavia={tehtavia1} />
-            <Sisalto osa={osa2} tehtavia={tehtavia2}/>
-            <Sisalto osa={osa3} tehtavia={tehtavia3}/>
-            <Yhteensa yht={tehtavia1 + tehtavia2 + tehtavia3} />
-            {/* <p>yhteensä {tehtavia1 + tehtavia2 + tehtavia3} tehtävää</p> */}
-            {/* <h1>{kurssi}</h1> */}
-            {/* <p>{osa1} {tehtavia1}</p> */}
-            {/* <p>{osa2} {tehtavia2}</p> */}
-            {/* <p>{osa3} {tehtavia3}</p> */}
-        
+            <Sisalto osa={osa1} />
+            <Sisalto osa={osa2} />
+            <Sisalto osa={osa3} />
+            <Yhteensa yht={osa1.tehtavia + osa2.tehtavia + osa3.tehtavia} />
         </div>
     )
 }
