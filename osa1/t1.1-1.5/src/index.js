@@ -44,7 +44,7 @@ const Osa = (props) => {
 }
 
 const App = () => {
-    // Kurssi ei ole olio, vaan osat on
+    // Nyt kurssi on olio
     const kurssi = {
         nimi: 'Half Stack -sovelluskehitys',
 
