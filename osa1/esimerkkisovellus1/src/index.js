@@ -9,25 +9,31 @@ class App extends React.Component {
         this.state = {
             counter: 1
         }
-        
+
         this.kasvataYhdella = this.kasvataYhdella.bind(this)
         this.nollaa = this.nollaa.bind(this)
     }
-
     kasvataYhdella = () => {
-        this.setState({ counter: this.state.counter + 1})
+        this.setState((prevState) => ({
+            counter: prevState.counter + 1
+        }))
     }
-    // kasvataYhdella() {
+
+
+    // setState kutsut eivät välttämättä tapahdu siinä järjestyksessä missä ne on kirjoitettu koodiin
+    // kasvataYhdella = () => {
     //     this.setState({ counter: this.state.counter + 1 })
     // }
 
+
     nollaa = () => {
-        this.setState({ counter: 0})
+        // React kutsuu funktiota setState asynkroonisesti, joten molemmat rivit tulostavat saman arvon sillä Reactin tila ei saa uutta arvoa heti komennon this.setState jälkeen
+        console.log(this.state.counter)
+        this.setState({ counter: 0 })
+        console.log(this.state.counter)
     }
 
-    // nollaa() {
-    //     this.setState({counter: 0})
-    // }
+
     render() {
         return (
             <div>
@@ -45,79 +51,6 @@ class App extends React.Component {
         )
     }
 }
-
-
-
-// Bindin tekeminen tapa 1
-
-// class App extends React.Component {
-//     constructor() {
-//         super()
-//         this.state = {
-//             counter: 1
-//         }
-//     }
-
-//     kasvataYhdella() {
-//         this.setState({ counter: this.state.counter + 1 })
-//     }
-
-//     nollaa() {
-//         this.setState({ counter: 0 })
-//     }
-
-//     render() {
-//         return (
-//             <div>
-//                 <div>{this.state.counter}</div>
-//                 <div>
-//                     {/* Ei toimi this näin koska this ei enää viittaa komponenttiin App vaan on arvoltaan undefined. Virhe korjataan käyttäen bindiä */}
-//                     {/* <button onClick={this.kasvataYhdella}> */}
-
-//                     {/* Bindaamisella muodostetaan uusi funktio, jonka koodi on alkuperäisen funktion koodi */}
-//                     <button onClick={this.kasvataYhdella.bind(this)}>
-//                         plus
-//                     </button>
-//                     <button onClick={this.nollaa.bind(this)}>
-//                         zero
-//                     </button>
-//                 </div>
-//             </div>
-//         )
-//     }
-// }
-
-
-
-// class App extends React.Component {
-// constructor() {
-// super()
-// this.state = {
-// counter: 1
-// }
-// }
-
-// render() {
-// return (
-// <div>
-// <div>{this.state.counter}</div>
-// {/* Jokainen napin painallus tulostaa konsoliin clicked */ }
-// {/* <button onClick={() => console.log('clicked')}> */ }
-
-// {/* Jokainen napin painallus kasvattaa laskuria */ }
-// <button onClick={() => this.setState({ counter: this.state.counter + 1 })}>
-// plus
-// </button>
-// {/* Napin painallus nollaa laskurin */ }
-// <button onClick={() => this.setState({ counter: 0 })}>
-// zero
-// </button>
-// </div>
-// )
-// }
-// }
-
-
 
 ReactDOM.render(
     <App />,
