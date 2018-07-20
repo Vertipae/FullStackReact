@@ -1,37 +1,73 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-// import './index.css';
-// import App from './App';
-// import registerServiceWorker from './registerServiceWorker';
+import React from 'react'
+import ReactDOM from 'react-dom'
+
 
 // Hello on komponentti, komponentin määrittelevällä funktiolla on nyt parametri props. Komponentti kirjoitetaan isolla eli Hello.
-const Hello = (props) => {
-    return (
-        <div>
-            <p>Hello {props.name}, you are {props.age} years old</p>
-            </div>
-    )
-}
+// const Hello = (props) => {
+    // return (
+        // <div>
+            // <p>Hello {props.name}, you are {props.age} years old</p>
+        // </div>
+    // )
+// }
 
 // Funktio on kaikki sulkujen sisässä nuolen jälkeen
-const App = () => {
-    const nimi = 'Pekka';
-    const ika = 10;
-    {/*const now = new Date();
-    const a = 10;
-    const b = 20;
-    */}
-    console.log('Hello from komponentti');
-    return (
-    <div>
-        <h1>Greetings</h1>
-        {/* Propsit määritellään seuraavasti */}
-        <Hello name="Arto" age={26 + 10}/>
-        <Hello name={nimi} age={ika}/>
-    {/* <p>Hello world, it is {now.toString()}</p>
-        <p>{a} plus {b} is {a + b}</p>*/}
-    </div>
-)};
 
-ReactDOM.render(<App />, document.getElementById('root'));
-// registerServiceWorker();
+
+class App extends React.Component {
+    constructor(props) {
+        super(props)
+        // Tila sisältää kentän counter, jonka arvo on 1. Ei tulisi päivittää suoraan.
+        this.state = {
+            counter: 1
+        }
+
+        setInterval(() => {
+            // Tilan päivitys tapahtuu setState funktion avulla. Kutsutaan funktiota setState toistuvasti sekunnin välein korottaen laskurin arvoa aina yhdellä.
+            this.setState({ counter: this.state.counter + 1})
+        }, 1000)
+    }
+
+    render() {
+        // Konsolissa tulostetaan
+        console.log('Renderöidään', this.state.counter)
+        return (
+            <div>{this.state.counter}</div>
+        )
+    }
+}
+
+ReactDOM.render(
+    <App />,
+    document.getElementById('root')
+)
+
+
+// const App = (props) => {
+    // const { counter } = props
+
+    // return (
+        // <div>{counter.value}</div>
+    // )
+// };
+
+// const counter = {
+    // value: 1
+// }
+
+// const renderoi = () => {
+    // ReactDOM.render(<App counter={counter} />, document.getElementById('root'))
+// }
+
+// setInterval(() => {
+    // renderoi()
+    // counter.value += 1
+// },)
+
+// renderoi()
+// counter.value += 1
+// renderoi()
+// counter.value += 1
+// renderoi()
+
+
