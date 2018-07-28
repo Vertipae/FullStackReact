@@ -1,51 +1,44 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
-const Display = ({ counter }) => <div>{counter}</div>
+// const Display = ({ counter }) => <div>{counter}</div>
 
 
-const Button = ({ handleClick, text }) => (
-    <button onClick={handleClick}>
-        {text}
-    </button>
-)
+// const Button = ({ handleClick, text }) => (
+//     <button onClick={handleClick}>
+//         {text}
+//     </button>
+// )
 
 class App extends React.Component {
-    constructor() {
-        super()
+    constructor(props) {
+        super(props)
         this.state = {
-            counter: 1
+            vasen: 0,
+            oikea: 0
 
         }
     }
-    // Metodi sisältää vain yhden komennon, eli returnin niin hyödynnetään nuolifunktion tiiviimpää muotoa "kaksi nuolta sisältävä funktio"
-    asetaArvoon = (arvo) => () => this.setState({ counter: arvo })
+    klikVasen = () => {
+        this.setState({
+            vasen: this.state.vasen + 1
+        })
+    }
 
-    // Pidempi muoto
-    // asetaArvoon = (arvo) => {
-    //     return () => {
-    //         this.setState({ counter: arvo })
-    //     }
-
-    // }
+    klikOikea = () => {
+        this.setState({
+            oikea: this.state.oikea + 1
+        })
+    }
 
     render() {
         return (
             <div>
-                {/* Muutettiin laskurin arvon näyttäminen omaan komponenttiin */}
-                <Display counter={this.state.counter} />
                 <div>
-                    <Button
-                        handleClick={this.asetaArvoon(this.state.counter + 1)}
-                        text="plus"
-                    />
-                    <Button
-                        handleClick={this.asetaArvoon(this.state.counter - 1)}
-                        text="minus" />
-                    <Button
-                        handleClick={this.asetaArvoon(0)}
-                        text="zero"
-                    />
+                    {this.state.vasen}
+                    <button onClick={this.klikVasen}>vasen</button>
+                    <button onClick={this.klikOikea}>oikea</button>
+                    {this.state.oikea}
                 </div>
             </div>
         )
@@ -53,46 +46,6 @@ class App extends React.Component {
 
 }
 
-
-// Bindi konstruktorissa class properties -ominaisuudella
-// class App extends React.Component {
-//     constructor() {
-//         super()
-//         this.state = {
-//             counter: 1
-//         }
-
-//         this.kasvataYhdella = this.kasvataYhdella.bind(this)
-//         this.nollaa = this.nollaa.bind(this)
-//     }
-//     kasvataYhdella = () => {
-//         this.setState((prevState) => ({
-//             counter: prevState.counter + 1
-//         }))
-//     }
-
-//     nollaa = () => {
-//         this.setState({ counter: 0 })
-//     }
-
-
-//     render() {
-//         return (
-//             <div>
-//                 <div>{this.state.counter}</div>
-//                 <div>
-//                     {/* Viitataan metodeihin ilman bindiä */}
-//                     <button onClick={this.kasvataYhdella}>
-//                         plus
-//                 </button>
-//                     <button onClick={this.nollaa}>
-//                         nollaa
-//                 </button>
-//                 </div>
-//             </div>
-//         )
-//     }
-// }
 
 ReactDOM.render(
     <App />,
