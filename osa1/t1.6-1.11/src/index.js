@@ -6,6 +6,27 @@ const Button = ({ handleClick, text }) => (
         {text}
     </button>
 )
+// Destruktoitu
+const Statistics = ({ state, keskiarvo, positiiviset }) => {
+    return (
+        <div>
+            <h1>Statistiikka</h1>
+            <Statistic text={'hyvä ' + state.hyva} />
+            <Statistic text={'neutraali ' + state.neutraali} />
+            <Statistic text={'huono ' + state.huono} />
+            <Statistic text={'keskiarvo ' + keskiarvo()} />
+            <Statistic text={'positiivisia ' + positiiviset()} />
+        </div>
+    )
+}
+
+const Statistic = ({ text }) => {
+    return (
+        <div>
+            <p>{text}</p>
+        </div>
+    )
+}
 
 class App extends React.Component {
     constructor() {
@@ -23,7 +44,7 @@ class App extends React.Component {
 
     huono = () => () => { this.setState({ huono: this.state.huono + 1 }) }
 
-    keskiarvo = () => { 
+    keskiarvo = () => {
         const yht = this.state.hyva + (this.state.huono * -1)
         const maara = this.state.hyva + this.state.huono + this.state.neutraali
         return yht / maara
@@ -51,14 +72,10 @@ class App extends React.Component {
                         text="huono"
                     />
                 </div>
-            <h1>Statistiikka</h1>
-            <div>
-                <p>hyvä {this.state.hyva}</p>
-                <p>neutraali {this.state.neutraali}</p>
-                <p>huono {this.state.huono}</p>
-                <p>keskiarvo {this.keskiarvo()}</p>
-                <p>positiivisia {this.positiiviset()}</p>
-            </div>
+                <Statistics
+                    state={this.state}
+                    keskiarvo={() => this.keskiarvo()}
+                    positiiviset={() => this.positiiviset()} />
             </div>
         )
     }
