@@ -8,6 +8,14 @@ const Button = ({ handleClick, text }) => (
 )
 // Destruktoitu
 const Statistics = ({ state, keskiarvo, positiiviset }) => {
+    if (state.hyva + state.huono + state.neutraali === 0) {
+        return (
+            <div>
+                <h1>Statistiikka</h1>
+                <p>ei yhtään palautetta annettu</p>
+            </div>
+        )
+    }
     return (
         <div>
             <h1>Statistiikka</h1>
