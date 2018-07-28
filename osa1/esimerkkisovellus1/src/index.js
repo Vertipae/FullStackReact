@@ -1,6 +1,15 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
+const Display = ({ counter }) => <div>{counter}</div>
+
+
+const Button = ({ handleClick, text }) => (
+    <button onClick={handleClick}>
+        {text}
+    </button>
+)
+
 class App extends React.Component {
     constructor() {
         super()
@@ -23,14 +32,20 @@ class App extends React.Component {
     render() {
         return (
             <div>
-                <div>{this.state.counter}</div>
+                {/* Muutettiin laskurin arvon näyttäminen omaan komponenttiin */}
+                <Display counter={this.state.counter} />
                 <div>
-                    <button onClick={this.asetaArvoon(this.state.counter + 1)}>
-                        plus
-                    </button>
-                    <button onClick={this.asetaArvoon(0)}>
-                        zero
-                    </button>
+                    <Button
+                        handleClick={this.asetaArvoon(this.state.counter + 1)}
+                        text="plus"
+                    />
+                    <Button
+                        handleClick={this.asetaArvoon(this.state.counter - 1)}
+                        text="minus" />
+                    <Button
+                        handleClick={this.asetaArvoon(0)}
+                        text="zero"
+                    />
                 </div>
             </div>
         )
