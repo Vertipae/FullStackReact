@@ -1,14 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
-// const Display = ({ counter }) => <div>{counter}</div>
-
-
-// const Button = ({ handleClick, text }) => (
-//     <button onClick={handleClick}>
-//         {text}
-//     </button>
-// )
 
 class App extends React.Component {
     constructor(props) {
@@ -36,8 +28,22 @@ class App extends React.Component {
     }
 
     render() {
-        // metodissa render on nyt apufunktio. Join metodilla muodostetaan taulukosta merkkijono, alkiot on erotettuina välilyönnillä
-        const historia = () => this.state.kaikki.join(' ')
+
+        const historia = () => {
+            if (this.state.kaikki.length === 0) {
+                return (
+                    <div>
+                        <em>sovellusta käytetään nappeja painelemalla</em>
+                    </div>
+                )
+            }
+
+            return (
+                <div>
+                    näppäilyhistoria: {this.state.kaikki.join(' ')}
+                </div>
+            )
+        }
         return (
             <div>
                 <div>
