@@ -18,21 +18,27 @@ const Statistics = ({ state, keskiarvo, positiiviset }) => {
     }
     return (
         <div>
+
             <h1>Statistiikka</h1>
-            <Statistic text={'hyvä ' + state.hyva} />
-            <Statistic text={'neutraali ' + state.neutraali} />
-            <Statistic text={'huono ' + state.huono} />
-            <Statistic text={'keskiarvo ' + keskiarvo()} />
-            <Statistic text={'positiivisia ' + positiiviset()} />
+            <table>
+                <tbody>
+                    <Statistic text={'hyvä '} action={state.hyva} />
+                    <Statistic text={'neutraali '} action={state.neutraali} />
+                    <Statistic text={'huono '} action={state.huono} />
+                    <Statistic text={'keskiarvo '} action={keskiarvo()} />
+                    <Statistic text={'positiivisia '} action={positiiviset()} />
+                </tbody>
+            </table>
         </div>
     )
 }
 
-const Statistic = ({ text }) => {
+const Statistic = ({ text, action }) => {
     return (
-        <div>
-            <p>{text}</p>
-        </div>
+        <tr>
+            <td>{text}</td>
+            <td>{action}</td>
+        </tr>
     )
 }
 
