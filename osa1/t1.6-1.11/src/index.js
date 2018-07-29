@@ -46,11 +46,35 @@ class App extends React.Component {
         }
     }
     // Lisää hyvä - tilan arvoa yhdellä
-    hyva = () => () => { this.setState({ hyva: this.state.hyva + 1 }) }
+    // hyva = () => () => { this.setState({ hyva: this.state.hyva + 1 }) }
 
-    neutraali = () => () => { this.setState({ neutraali: this.state.neutraali + 1 }) }
+    // neutraali = () => () => { this.setState({ neutraali: this.state.neutraali + 1 }) }
 
-    huono = () => () => { this.setState({ huono: this.state.huono + 1 }) }
+    // huono = () => () => { this.setState({ huono: this.state.huono + 1 }) }
+
+    annaPalaute = (palaute) => {
+        if (palaute === "hyva") {
+            return () => {
+                this.setState({
+                    hyva: this.state.hyva + 1
+
+                })
+            }
+        } else if (palaute === "neutraali") {
+            return () => {
+                this.setState({
+                    neutraali: this.state.neutraali + 1
+                })
+            }
+        } else {
+            return () => {
+                this.setState({
+                    huono: this.state.huono + 1
+                })
+            }
+        }
+
+    }
 
     keskiarvo = () => {
         const yht = this.state.hyva + (this.state.huono * -1)
@@ -67,17 +91,21 @@ class App extends React.Component {
             <div>
                 <h1>Ystävällisesti antaisitko palautetta?</h1>
                 <div>
-                    <Button
+                    {/* <Button
                         handleClick={this.hyva()}
                         text="hyvä"
+                    /> */}
+                    <Button
+                        handleClick={this.annaPalaute("hyva")}
+                        text="Hyvä"
                     />
                     <Button
-                        handleClick={this.neutraali()}
-                        text="neutraali"
+                        handleClick={this.annaPalaute("neutraali")}
+                        text="Neutraali"
                     />
                     <Button
-                        handleClick={this.huono()}
-                        text="huono"
+                        handleClick={this.annaPalaute("huono")}
+                        text="Huono"
                     />
                 </div>
                 <Statistics
