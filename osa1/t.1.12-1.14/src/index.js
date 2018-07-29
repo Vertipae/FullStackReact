@@ -24,6 +24,25 @@ class App extends React.Component {
             })
         }
     }
+    topVoted = () => {
+
+        let top = 0;
+        let topIndex = 0;
+        // Haetaan taulukon suuri arvo ja katsotaan mihin anecdoteen se liittyy
+        for (let i = 0; i < this.props.votes.length; i++) {
+            if (this.props.votes[i] > top) {
+                top = this.props.votes[i]
+                topIndex = i;
+            }
+        }
+
+        return (
+            <div>
+                <p>{this.props.anecdotes[topIndex]}</p>
+                <p>has {top} votes </p>
+            </div>
+        )
+    }
 
     vote = () => {
         return () => {
@@ -45,6 +64,8 @@ class App extends React.Component {
                     text="Vote" />
                 <Button handleClick={this.generate(this.state)}
                     text="Next anecdote" />
+                <h1>Anecdote with most votes:</h1>
+                {this.topVoted()}
 
 
             </div>
