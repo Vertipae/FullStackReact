@@ -25,11 +25,24 @@ class App extends React.Component {
         }
     }
 
+    vote = () => {
+        return () => {
+            // Kasvattaa valittuna olevan arvoa yhdellä
+            this.props.votes[this.state.selected] += 1
+            this.setState({
+                selected: this.state.selected
+            })
+        }
+    }
+
     render() {
         return (
             <div>
                 {this.props.anecdotes[this.state.selected]}
+                <p>has {this.props.votes[this.state.selected]} votes </p>
                 <br></br>
+                <Button handleClick={this.vote(this.state)}
+                    text="Vote" />
                 <Button handleClick={this.generate(this.state)}
                     text="Next anecdote" />
 
@@ -39,6 +52,15 @@ class App extends React.Component {
     }
 }
 
+let votes = [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+]
+
 const anecdotes = [
     'If it hurts, do it more often',
     'Adding manpower to a late software project makes it later!',
@@ -47,5 +69,5 @@ const anecdotes = [
     'Premature optimization is the root of all evil.',
     'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.'
 ]
-ReactDOM.render(<App anecdotes={anecdotes} />, document.getElementById('root'));
+ReactDOM.render(<App anecdotes={anecdotes} votes={votes} />, document.getElementById('root'));
 
