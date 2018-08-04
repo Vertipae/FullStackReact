@@ -29,15 +29,17 @@ const Sisalto = ({ osat }) => {
     )
 }
 
-const Yhteensa = (props) => {
-    let summa = 0;
-    props.osat.forEach(osa => {
-        summa += osa.tehtavia;
-    });
+const Yhteensa = ({ osat }) => {
+    // let summa = 0;
+    // props.osat.forEach(osa => {
+    //     summa += osa.tehtavia;
+    // });
+
+    let totalTehtavia = osat.reduce((yht, osa) => yht + osa.tehtavia, 0)
     return (
         <div>
 
-            <p>Yhteensä {summa}</p>
+            <p>Yhteensä {totalTehtavia}</p>
 
         </div>
     )
