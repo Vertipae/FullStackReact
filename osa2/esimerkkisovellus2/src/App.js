@@ -8,7 +8,8 @@ class App extends React.Component {
         super(props)
         this.state = {
             notes: props.notes,
-            newNote: 'uusi muistiinpano..'
+            newNote: 'muistiinpano',
+            showAll: true
         }
     }
 
@@ -29,19 +30,37 @@ class App extends React.Component {
         const notes = this.state.notes.concat(noteObject)
 
         this.setState({
-            notes: notes,
+            notes,
             newNote: ''
         })
         // console.log('nappia painettu')
         // console.log(event.target)
     }
+
+    toggleVisible = () => {
+        this.setState({ showAll: !this.state.showAll })
+    }
     render() {
+        const notesToShow =
+            this.state.showAll ?
+                this.state.notes :
+                this.state.notes.filter(note => note.important)
+        // this.state.notes.filter(note => note.important === true)
+
+        const label = this.state.showAll ? 'vain tärkeät' : 'kaikki'
+
         return (
             <div>
                 <h1>Muistiinpanot</h1>
+
+                <div>
+                    <button onClick={this.toggleVisible}>
+                        näytä {label}
+                    </button>
+                </div>
                 <ul>
-                    {this.state.notes.map(note => <Note key={note.id} note={note} />)}
-                    {/* {notes.map(note => <Note key={note.id} note={note} />)} */}
+                    {notesToShow.map(note => <Note key={note.ide} note={note} />)}
+                    {/* {this.state.notes.map(note => <Note key={note.id} note={note} />)} */}
 
                 </ul>
                 <form onSubmit={this.addNote}>
