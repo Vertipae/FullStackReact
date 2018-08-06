@@ -25,16 +25,23 @@ class App extends React.Component {
             id: this.state.persons.length + 1
 
         }
-        // Lisää listalle 
-        const persons = this.state.persons.concat(personObject)
-        // Vaihda tilaan uusi lista henkilöitä ja nollaa kenttä
-        this.setState({
-            persons,
-            newName: ''
-        })
+        // some funktio palauttaa true, jos ehto käy toteen millä tahansa alkiolla
+        if (this.state.persons.some(oldPerson => oldPerson.name === personObject.name)) {
+            alert('Henkilö on jo luettelossa')
+        } else {
+
+            // Lisää listalle 
+            const persons = this.state.persons.concat(personObject)
+            // Vaihda tilaan uusi lista henkilöitä ja nollaa kenttä
+            this.setState({
+                persons,
+                newName: ''
+            })
+        }
     }
 
     render() {
+
         return (
             <div>
                 <h2>Puhelinluettelo</h2>
