@@ -1,5 +1,7 @@
 import React from 'react'
 import Person from './components/Person'
+import AddPerson from './components/AddPerson';
+import FilterPerson from './components/FilterPerson';
 
 class App extends React.Component {
     constructor(props) {
@@ -62,26 +64,9 @@ class App extends React.Component {
         return (
             <div>
                 <h2>Puhelinluettelo</h2>
-                Rajaa luetteloa: <input placeholdet='Nimi'
-                    value={this.findWith}
-                    onChange={this.handleFind} />
-                <form onSubmit={this.addPerson}>
-                    <div>
-                        Nimi: <input
-                            value={this.state.newName}
-                            placeholder='Nimi'
-                            onChange={this.handlePersonChange} />
-                    </div>
-                    <div>
-                        Numero: <input value={this.state.newNumber}
-                            placeholder='Numero'
-                            onChange={this.handleNumberChange} />
-                    </div>
-
-                    <div>
-                        <button type="submit">Lisää</button>
-                    </div>
-                </form>
+                {/* Omat komponentit FilterPerson ja Addperson */}
+                <FilterPerson handleFind={this.handleFind} findWith={this.findWith} />
+                <AddPerson state={this.state} addPerson={this.addPerson} handlePersonChange={this.handlePersonChange} handleNumberChange={this.handleNumberChange} />
                 <h2>Numerot</h2>
                 <ul>
                     {/* Listaa henkilöt listalta */}
