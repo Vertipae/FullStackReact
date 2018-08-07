@@ -6,10 +6,12 @@ class App extends React.Component {
         super(props)
         this.state = {
             persons: [
-                { name: 'Arto Hellas', id: 0 }
+                { name: 'Arto Hellas', id: 0 },
+                { name: 'Sallamaarit Jaako', id: 1 }
             ],
             newName: '',
-            newNumber: ''
+            newNumber: '',
+            findWith: ''
         }
     }
     // Muuttaa tilaa, jotta näyttö päivittyy kun kenttään kirjoitetaan
@@ -20,6 +22,10 @@ class App extends React.Component {
 
     handleNumberChange = (event) => {
         this.setState({ newNumber: event.target.value })
+    }
+
+    handleFind = (event) => {
+        this.setState({ findWith: event.target.value })
     }
     // Luo uuden henkilö olion ja lisää sen listalle
     // Prevent estää oletusarvoisen toiminnan eli lähetyksen serverille
@@ -49,9 +55,16 @@ class App extends React.Component {
 
     render() {
 
+
+        const personsToShow =
+            this.state.findWith.length === 0 ? this.state.persons : this.state.persons.filter(person => person.name.toUpperCase().includes(this.state.findWith.toUpperCase()))
+
         return (
             <div>
                 <h2>Puhelinluettelo</h2>
+                Rajaa luetteloa: <input placeholdet='Nimi'
+                    value={this.findWith}
+                    onChange={this.handleFind} />
                 <form onSubmit={this.addPerson}>
                     <div>
                         Nimi: <input
@@ -72,7 +85,9 @@ class App extends React.Component {
                 <h2>Numerot</h2>
                 <ul>
                     {/* Listaa henkilöt listalta */}
-                    {this.state.persons.map(person => <Person key={person.id} person={person} />)}
+                    {personsToShow.map(person => <Person key={person.id} person={person} />)}
+
+
                 </ul>
             </div>
         )
