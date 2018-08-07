@@ -8,7 +8,8 @@ class App extends React.Component {
             persons: [
                 { name: 'Arto Hellas', id: 0 }
             ],
-            newName: ''
+            newName: '',
+            newNumber: ''
         }
     }
     // Muuttaa tilaa, jotta näyttö päivittyy kun kenttään kirjoitetaan
@@ -16,12 +17,17 @@ class App extends React.Component {
         console.log(event.target.value)
         this.setState({ newName: event.target.value })
     }
+
+    handleNumberChange = (event) => {
+        this.setState({ newNumber: event.target.value })
+    }
     // Luo uuden henkilö olion ja lisää sen listalle
     // Prevent estää oletusarvoisen toiminnan eli lähetyksen serverille
     addPerson = (event) => {
         event.preventDefault()
         const personObject = {
             name: this.state.newName,
+            number: this.state.newNumber,
             id: this.state.persons.length + 1
 
         }
@@ -35,7 +41,8 @@ class App extends React.Component {
             // Vaihda tilaan uusi lista henkilöitä ja nollaa kenttä
             this.setState({
                 persons,
-                newName: ''
+                newName: '',
+                newNumber: ''
             })
         }
     }
@@ -49,7 +56,13 @@ class App extends React.Component {
                     <div>
                         Nimi: <input
                             value={this.state.newName}
+                            placeholder='Nimi'
                             onChange={this.handlePersonChange} />
+                    </div>
+                    <div>
+                        Numero: <input value={this.state.newNumber}
+                            placeholder='Numero'
+                            onChange={this.handleNumberChange} />
                     </div>
 
                     <div>
