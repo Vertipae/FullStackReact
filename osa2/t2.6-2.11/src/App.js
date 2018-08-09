@@ -1,20 +1,29 @@
 import React from 'react'
 import Person from './components/Person'
-import AddPerson from './components/AddPerson';
-import FilterPerson from './components/FilterPerson';
+import AddPerson from './components/AddPerson'
+import FilterPerson from './components/FilterPerson'
+import axios from 'axios'
 
 class App extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
             persons: [
-                { name: 'Arto Hellas', id: 0 },
-                { name: 'Sallamaarit Jaako', id: 1 }
+                // { name: 'Arto Hellas', id: 0 },
+                // { name: 'Sallamaarit Jaako', id: 1 }
             ],
             newName: '',
             newNumber: '',
             findWith: ''
         }
+
+    }
+    componentDidMount() {
+        axios
+            .get('http://localhost:3001/persons')
+            .then(response => {
+                this.setState({ persons: response.data })
+            })
     }
     // Muuttaa tilaa, jotta näyttö päivittyy kun kenttään kirjoitetaan
     handlePersonChange = (event) => {
