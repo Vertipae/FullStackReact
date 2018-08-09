@@ -1,16 +1,44 @@
 import React from 'react'
 import Note from './components/Note'
+import axios from 'axios'
 
 // const App = ({ notes }) => {
 
+// class App extends React.Component {
+//     constructor(props) {
+//         super(props)
+//         this.state = {
+//             notes: props.notes,
+//             newNote: 'muistiinpano',
+//             showAll: true
+//         }
+//     }
 class App extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            notes: props.notes,
-            newNote: 'muistiinpano',
+            notes: [],
+            newNote: '',
             showAll: true
         }
+        console.log('constructor')
+    } // Lifecycle-metodi componentDidMount tulee renderin jälkeen
+    componentDidMount() {
+        console.log('did mount')
+        axios
+            .get('http://localhost:3001/notes')
+            .then(response => {
+                console.log('promise fulfilled')
+                this.setState({ notes: response.data })
+            })
+
+        // koodin voi myös kirjoittaa seuraavasti, jossa muuttujaan eventHandler on sijoitettu viite funktioon
+        // const eventHandler = (response) => {
+        //     console.log('promise fulfilled')
+        //     this.setState({ notes: response.data })
+        // }
+        // const promise = axios.get('http://localhost:3001/notes')
+        // promise.then(eventHandler)
     }
 
     handleNoteChange = (event) => {
@@ -41,6 +69,7 @@ class App extends React.Component {
         this.setState({ showAll: !this.state.showAll })
     }
     render() {
+        console.log('render')
         const notesToShow =
             this.state.showAll ?
                 this.state.notes :
@@ -59,7 +88,7 @@ class App extends React.Component {
                     </button>
                 </div>
                 <ul>
-                    {notesToShow.map(note => <Note key={note.ide} note={note} />)}
+                    {notesToShow.map(note => <Note key={note.id} note={note} />)}
                     {/* {this.state.notes.map(note => <Note key={note.id} note={note} />)} */}
 
                 </ul>
