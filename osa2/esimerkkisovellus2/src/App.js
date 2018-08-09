@@ -52,15 +52,24 @@ class App extends React.Component {
             content: this.state.newNote,
             date: new Date().toISOString(),
             important: Math.random() > 0.5,
-            id: this.state.notes.length + 1
+            // id: this.state.notes.length + 1
         }
 
-        const notes = this.state.notes.concat(noteObject)
+        axios.post('http://localhost:3001/notes', noteObject)
+            .then(response => {
+                this.setState({
+                    notes: this.state.notes.concat(response.data),
+                    newNote: ''
+                })
+                // console.log(response)
+            })
 
-        this.setState({
-            notes,
-            newNote: ''
-        })
+        // const notes = this.state.notes.concat(noteObject)
+
+        // this.setState({
+        //     notes,
+        //     newNote: ''
+        // })
         // console.log('nappia painettu')
         // console.log(event.target)
     }

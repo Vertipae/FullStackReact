@@ -1,24 +1,52 @@
-
-
+{
+  "notes": [
     {
-        "notes": [
-          {
-            "id": 1,
-            "content": "HTML on helppoa",
-            "date": "2017-12-10T17:30:31.098Z",
-            "important": true
-          },
-          {
-            "id": 2,
-            "content": "Selain pystyy suorittamaan vain javascriptiä",
-            "date": "2017-12-10T18:39:34.091Z",
-            "important": false
-          },
-          {
-            "id": 3,
-            "content": "HTTP-protokollan tärkeimmät metodit ovat GET ja POST",
-            "date": "2017-12-10T19:20:14.298Z",
-            "important": true
-          }
-        ]
-      }
+      "id": 1,
+      "content": "HTML on helppoa",
+      "date": "2017-12-10T17:30:31.098Z",
+      "important": true
+    },
+    {
+      "id": 2,
+      "content": "Selain pystyy suorittamaan vain javascriptiä",
+      "date": "2017-12-10T18:39:34.091Z",
+      "important": false
+    },
+    {
+      "id": 3,
+      "content": "HTTP-protokollan tärkeimmät metodit ovat GET ja POST",
+      "date": "2017-12-10T19:20:14.298Z",
+      "important": true
+    },
+    {
+      "content": "lol",
+      "date": "2018-08-09T14:32:18.907Z",
+      "important": false,
+      "id": 4
+    },
+    {
+      "content": "lol",
+      "date": "2018-08-09T14:33:27.606Z",
+      "important": true,
+      "id": 5
+    },
+    {
+      "content": "looool",
+      "date": "2018-08-09T14:33:57.119Z",
+      "important": false,
+      "id": 6
+    },
+    {
+      "content": "Hello",
+      "date": "2018-08-09T14:39:10.762Z",
+      "important": true,
+      "id": 7
+    },
+    {
+      "content": "React on mukavaa",
+      "date": "2018-08-09T14:43:09.832Z",
+      "important": false,
+      "id": 8
+    }
+  ]
+}
