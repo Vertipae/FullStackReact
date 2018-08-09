@@ -73,6 +73,28 @@ class App extends React.Component {
         // console.log('nappia painettu')
         // console.log(event.target)
     }
+    toggleImportanceOf = (id) => {
+        return () => {
+            // Ensimmäinen rivi määrittelee jokaiselle muistiinpanolle id-kenttään perustuvan yksilöivän url:in.
+            const url = `http://localhost:3001/notes/${id}`
+            // Taulukon metodilla find etsitään muutettava muistiinpano ja talletetaan muuttujaan note viite siihen.
+            const note = this.state.notes.find(n => n.id === id)
+            // Sen jälkeen luodaan uusi olio, jonka sisältö on sama kuin vanhan olion sisältö poislukien kenttä important.
+            const changedNote = { ...note, important: !note.important }
+            // Takaisinkutsufunktiossa asetetaan komponentin App tilaan kaikki vanhat muistiinpanot paitsi muuttuneen, josta tilaan asetetaan palvelimen palauttama versio
+            axios
+                .put(url, changedNote)
+                .then(response => {
+                    this.setState({
+                        // Jokainen uuden taulukon alkio luodaan ehdollisesti siten, että jos ehto note.id !== id on tosi, otetaan uuteen taulukkoon suoraan vanhan taulukon kyseinen alkio.
+                        //  Jos ehto on epätosi, eli kyseessä on muutettu muistiinpano, otetaan uuteen taulukkoon palvelimen palauttama olio.
+                        notes: this.state.notes.map(note => note.id !== id ? note : response.data)
+                    })
+                })
+            // console.log('importance of ' + id + ' need to be toggled')
+            // console.log(`importance of ${id} needs to be toggled`)
+        }
+    }
 
     toggleVisible = () => {
         this.setState({ showAll: !this.state.showAll })
@@ -97,8 +119,8 @@ class App extends React.Component {
                     </button>
                 </div>
                 <ul>
-                    {notesToShow.map(note => <Note key={note.id} note={note} />)}
-                    {/* {this.state.notes.map(note => <Note key={note.id} note={note} />)} */}
+                    {/* Jokaisen muistiinpanon tapahtumankäsittelijä on nyt yksilöllinen, sillä se sisältää muistiinpanon id:n. toggleImportanceOf ei itsessään ole tapahtumankäsittelijä  */}
+                    {notesToShow.map(note => <Note key={note.id} note={note} toggleImportance={this.toggleImportanceOf(note.id)} />)}
 
                 </ul>
                 <form onSubmit={this.addNote}>
