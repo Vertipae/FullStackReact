@@ -1,6 +1,7 @@
 import React from 'react'
 import Note from './components/Note'
 import axios from 'axios'
+import noteService from './services/notes'
 
 // const App = ({ notes }) => {
 
@@ -24,13 +25,19 @@ class App extends React.Component {
         console.log('constructor')
     } // Lifecycle-metodi componentDidMount tulee renderin jälkeen
     componentDidMount() {
-        console.log('did mount')
-        axios
-            .get('http://localhost:3001/notes')
+        noteService
+            .getAll()
             .then(response => {
-                console.log('promise fulfilled')
-                this.setState({ notes: response.data })
+                this.setState({ notes: response })
             })
+        // console.log('did mount')
+        // axios
+        //     .get('http://localhost:3001/notes')
+        //     .then(response => {
+        //         console.log('promise fulfilled')
+        //         this.setState({ notes: response.data })
+        //     }
+        // )
 
         // koodin voi myös kirjoittaa seuraavasti, jossa muuttujaan eventHandler on sijoitettu viite funktioon
         // const eventHandler = (response) => {
@@ -53,7 +60,18 @@ class App extends React.Component {
             date: new Date().toISOString(),
             important: Math.random() > 0.5,
             // id: this.state.notes.length + 1
+
         }
+        noteService
+            .create(noteObject)
+            // .then(response => {
+            .then(newNote => {
+                this.setState({
+                    // notes: this.state.notes.concat(response),
+                    notes: this.state.notes.concat(newNote),
+                    newNote: ''
+                })
+            })
 
         axios.post('http://localhost:3001/notes', noteObject)
             .then(response => {
@@ -82,15 +100,27 @@ class App extends React.Component {
             // Sen jälkeen luodaan uusi olio, jonka sisältö on sama kuin vanhan olion sisältö poislukien kenttä important.
             const changedNote = { ...note, important: !note.important }
             // Takaisinkutsufunktiossa asetetaan komponentin App tilaan kaikki vanhat muistiinpanot paitsi muuttuneen, josta tilaan asetetaan palvelimen palauttama versio
-            axios
-                .put(url, changedNote)
-                .then(response => {
+
+            noteService
+                .update(id, changedNote)
+                // .then(response => {
+                .then(changedNote => {
+                    //  this.setState({
+                    //  notes: this.state.notes.map(note => note.id !== id ? note : response.data)
+                    const notes = this.state.notes.filter(n = n.id !== id)
                     this.setState({
-                        // Jokainen uuden taulukon alkio luodaan ehdollisesti siten, että jos ehto note.id !== id on tosi, otetaan uuteen taulukkoon suoraan vanhan taulukon kyseinen alkio.
-                        //  Jos ehto on epätosi, eli kyseessä on muutettu muistiinpano, otetaan uuteen taulukkoon palvelimen palauttama olio.
-                        notes: this.state.notes.map(note => note.id !== id ? note : response.data)
+                        notes: notes.concat(changedNote)
                     })
                 })
+            // axios
+            //     .put(url, changedNote)
+            //     .then(response => {
+            //         this.setState({
+            //             // Jokainen uuden taulukon alkio luodaan ehdollisesti siten, että jos ehto note.id !== id on tosi, otetaan uuteen taulukkoon suoraan vanhan taulukon kyseinen alkio.
+            //             //  Jos ehto on epätosi, eli kyseessä on muutettu muistiinpano, otetaan uuteen taulukkoon palvelimen palauttama olio.
+            //             notes: this.state.notes.map(note => note.id !== id ? note : response.data)
+            //         })
+            //     })
             // console.log('importance of ' + id + ' need to be toggled')
             // console.log(`importance of ${id} needs to be toggled`)
         }
