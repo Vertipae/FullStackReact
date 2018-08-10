@@ -3,6 +3,7 @@ import Person from './components/Person'
 import AddPerson from './components/AddPerson'
 import FilterPerson from './components/FilterPerson'
 import axios from 'axios'
+import personService from './services/persons'
 
 class App extends React.Component {
     constructor(props) {
@@ -19,10 +20,11 @@ class App extends React.Component {
 
     }
     componentDidMount() {
-        axios
-            .get('http://localhost:3001/persons')
+        personService
+            .getAll()
             .then(response => {
-                this.setState({ persons: response.data })
+                this.setState({ persons: response })
+
             })
     }
     // Muuttaa tilaa, jotta näyttö päivittyy kun kenttään kirjoitetaan
@@ -53,14 +55,15 @@ class App extends React.Component {
             alert('Henkilö on jo luettelossa')
         } else {
 
-            // Lisää listalle 
-            const persons = this.state.persons.concat(personObject)
-            // Vaihda tilaan uusi lista henkilöitä ja nollaa kenttä
-            this.setState({
-                persons,
-                newName: '',
-                newNumber: ''
-            })
+            personService
+                .create(personObject)
+                .then(newPerson => {
+                    this.setState({
+                        persons: this.state.persons.concat(newPerson),
+                        newName: '',
+                        newNumber: ''
+                    })
+                })
         }
     }
 
