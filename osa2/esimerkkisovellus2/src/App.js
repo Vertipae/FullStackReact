@@ -107,10 +107,15 @@ class App extends React.Component {
                 .then(changedNote => {
                     //  this.setState({
                     //  notes: this.state.notes.map(note => note.id !== id ? note : response.data)
-                    const notes = this.state.notes.filter(n = n.id !== id)
+                    const notes = this.state.notes.filter(n => n.id !== id)
                     this.setState({
                         notes: notes.concat(changedNote)
                     })
+                })
+                .catch(error => {
+                    alert(`muistiinpano '${note.content}' on jo valitettavasti poistettu palvelimelta`)
+                    // Metodi filter poistaa olemattoman muistiinpanon
+                    this.setState({ notes: this.state.notes.filter(n => n.id !== id) })
                 })
             // axios
             //     .put(url, changedNote)
