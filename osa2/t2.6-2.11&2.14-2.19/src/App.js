@@ -40,6 +40,19 @@ class App extends React.Component {
     handleFind = (event) => {
         this.setState({ findWith: event.target.value })
     }
+
+    deletePerson = (id, name) => {
+        if (window.confirm(`Poistetaanko ${name} listalta`)) {
+            personService
+                .destroy(id)
+                .then(response => {
+                    this.setState({
+                        persons: this.state.persons.filter(person => person.id !== id),
+                        notification: `${name} poistettu listalta`
+                    })
+                })
+        }
+    }
     // Luo uuden henkilö olion ja lisää sen listalle
     // Prevent estää oletusarvoisen toiminnan eli lähetyksen serverille
     addPerson = (event) => {
@@ -82,7 +95,7 @@ class App extends React.Component {
                 <h2>Numerot</h2>
                 <ul>
                     {/* Listaa henkilöt listalta */}
-                    {personsToShow.map(person => <Person key={person.id} person={person} />)}
+                    {personsToShow.map(person => <Person key={person.id} person={person} deletePerson={this.deletePerson} />)}
 
 
                 </ul>
