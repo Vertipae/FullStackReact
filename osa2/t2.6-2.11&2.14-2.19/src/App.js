@@ -48,7 +48,6 @@ class App extends React.Component {
                 .then(response => {
                     this.setState({
                         persons: this.state.persons.filter(person => person.id !== id),
-                        notification: `${name} poistettu listalta`
                     })
                 })
         }
@@ -63,9 +62,29 @@ class App extends React.Component {
             id: this.state.persons.length + 1
 
         }
+
+        let isOldPerson = function (element) {
+            return element.name.toUpperCase() === personObject.name.toUpperCase()
+        }
         // some funktio palauttaa true, jos ehto käy toteen millä tahansa alkiolla
-        if (this.state.persons.some(oldPerson => oldPerson.name === personObject.name)) {
+        // if (this.state.persons.some(oldPerson => oldPerson.name === personObject.name)) 
+        if (this.state.persons.some(isOldPerson)) {
             alert('Henkilö on jo luettelossa')
+            if (window.confirm(`${personObject.name} on jo luettelossa, korvataanko numero uudella?`)) {
+                const hArray = this.state.persons.filter(p => p.name.toUpperCase() === personObject.name.toUpperCase())
+                const pUpdate = hArray[0]
+                personService
+                    .update(pUpdate.id, personObject)
+                    .then(updatedPerson => {
+                        const persons = this.state.persons.filter(p => p.id !== updatedPerson.id)
+                        this.setState({
+                            persons: persons.concat(updatedPerson),
+                            newName: '',
+                            newNumber: ''
+                        })
+                    })
+
+            }
         } else {
 
             personService
