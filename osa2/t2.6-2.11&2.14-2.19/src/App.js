@@ -4,6 +4,7 @@ import AddPerson from './components/AddPerson'
 import FilterPerson from './components/FilterPerson'
 import axios from 'axios'
 import personService from './services/persons'
+import Notification from './components/Notification'
 
 class App extends React.Component {
     constructor(props) {
@@ -15,7 +16,8 @@ class App extends React.Component {
             ],
             newName: '',
             newNumber: '',
-            findWith: ''
+            findWith: '',
+            error: null
         }
 
     }
@@ -48,7 +50,11 @@ class App extends React.Component {
                 .then(response => {
                     this.setState({
                         persons: this.state.persons.filter(person => person.id !== id),
+                        error: `${name} poistettu onnistuneesti`
                     })
+                    setTimeout(() => {
+                        this.setState({ error: null })
+                    }, 3000)
                 })
         }
     }
@@ -69,7 +75,7 @@ class App extends React.Component {
         // some funktio palauttaa true, jos ehto käy toteen millä tahansa alkiolla
         // if (this.state.persons.some(oldPerson => oldPerson.name === personObject.name)) 
         if (this.state.persons.some(isOldPerson)) {
-            alert('Henkilö on jo luettelossa')
+            // alert('Henkilö on jo luettelossa')
             if (window.confirm(`${personObject.name} on jo luettelossa, korvataanko numero uudella?`)) {
                 const hArray = this.state.persons.filter(p => p.name.toUpperCase() === personObject.name.toUpperCase())
                 const pUpdate = hArray[0]
@@ -80,10 +86,13 @@ class App extends React.Component {
                         this.setState({
                             persons: persons.concat(updatedPerson),
                             newName: '',
-                            newNumber: ''
+                            newNumber: '',
+                            error: `${updatedPerson.name} päivitetty onnistuneesti`
                         })
+                        setTimeout(() => {
+                            this.setState({ error: null })
+                        }, 3000)
                     })
-
             }
         } else {
 
@@ -93,8 +102,13 @@ class App extends React.Component {
                     this.setState({
                         persons: this.state.persons.concat(newPerson),
                         newName: '',
-                        newNumber: ''
+                        newNumber: '',
+                        error: `${newPerson.name} luotu onnistuneesti`
+
                     })
+                    setTimeout(() => {
+                        this.setState({ error: null })
+                    }, 3000)
                 })
         }
     }
@@ -108,6 +122,7 @@ class App extends React.Component {
         return (
             <div>
                 <h2>Puhelinluettelo</h2>
+                <Notification message={this.state.error} />
                 {/* Omat komponentit FilterPerson ja Addperson */}
                 <FilterPerson handleFind={this.handleFind} findWith={this.findWith} />
                 <AddPerson state={this.state} addPerson={this.addPerson} handlePersonChange={this.handlePersonChange} handleNumberChange={this.handleNumberChange} />
