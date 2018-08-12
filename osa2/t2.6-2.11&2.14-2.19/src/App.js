@@ -5,6 +5,7 @@ import FilterPerson from './components/FilterPerson'
 import axios from 'axios'
 import personService from './services/persons'
 import Notification from './components/Notification'
+import persons from './services/persons';
 
 class App extends React.Component {
     constructor(props) {
@@ -92,6 +93,21 @@ class App extends React.Component {
                         setTimeout(() => {
                             this.setState({ error: null })
                         }, 3000)
+                    })
+                    .catch(error => {
+                        personService
+                            .create(personObject)
+                            .then(response => {
+                                // componentDidMount päivittää listan
+                                this.componentDidMount()
+                                this.setState({
+                                    error: `${personObject.name} päivitetty onnistuneesti`
+                                })
+                                setTimeout(() => {
+                                    this.setState({ error: null })
+                                }, 3000)
+                            })
+
                     })
             }
         } else {
