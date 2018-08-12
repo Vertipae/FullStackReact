@@ -2,6 +2,7 @@ import React from 'react'
 import Note from './components/Note'
 import axios from 'axios'
 import noteService from './services/notes'
+import Notification from './components/Notification'
 
 
 // const App = ({ notes }) => {
@@ -21,7 +22,8 @@ class App extends React.Component {
         this.state = {
             notes: [],
             newNote: '',
-            showAll: true
+            showAll: true,
+            error: 'something went wrong..'
         }
         console.log('constructor')
     } // Lifecycle-metodi componentDidMount tulee renderin jälkeen
@@ -114,9 +116,17 @@ class App extends React.Component {
                     })
                 })
                 .catch(error => {
-                    alert(`muistiinpano '${note.content}' on jo valitettavasti poistettu palvelimelta`)
+                    this.setState({
+                        error: `muistiinpano '${note.content}' on jo valitettavasti poistettu palvelimelta`,
+                        notes: this.state.notes.filter(n => n.id !== id)
+                    })
+                    // Ajastin, joka asettaa 5 sekunnin kuluttua tilan error-kentän arvoksi null
+                    setTimeout(() => {
+                        this.setState({ error: null })
+                    }, 5000)
+                    // alert(`muistiinpano '${note.content}' on jo valitettavasti poistettu palvelimelta`)
                     // Metodi filter poistaa olemattoman muistiinpanon
-                    this.setState({ notes: this.state.notes.filter(n => n.id !== id) })
+                    // this.setState({ notes: this.state.notes.filter(n => n.id !== id) })
                 })
             // axios
             //     .put(url, changedNote)
@@ -148,7 +158,7 @@ class App extends React.Component {
         return (
             <div>
                 <h1>Muistiinpanot</h1>
-
+                <Notification message={this.state.error} />
                 <div>
                     <button onClick={this.toggleVisible}>
                         näytä {label}
