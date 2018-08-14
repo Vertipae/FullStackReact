@@ -1,5 +1,9 @@
 // Ottaa käyttöön Noden sisäänrakennetun web-palvelimen määrittelevän moduulin. Sama asia kuin import http from 'http'
-const http = require('http')
+// const http = require('http')
+
+// Heti alussa otetaan käyttöön express, joka on tällä kertaa funktio, jota kutsumalla luodaan muuttujaan app sijoitettava express-sovellusta vastaava olio
+const express = require('express')
+const app = express()
 
 let notes = [
     {
@@ -22,16 +26,32 @@ let notes = [
     }
 
 ]
-const app = http.createServer((request, response) => {
-    response.writeHead(200, { 'Content-Type': 'application/json' })
-    response.end(JSON.stringify(notes))
+// Määritellään sovellukselle kaksi routea. Näistä ensimmäinen määrittelee tapahtumankäsittelijän, joka hoitaa sovelluksen juureen eli polkuun / tulevia HTTP GET -pyyntöjä
+app.get('/', (req, res) => {
+    res.send('<h1>Hello World!</h1>')
 })
+// Routeista toinen määrittelee tapahtumankäsittelijän, joka hoitaa sovelluksen polkuun notes tulevia HTTP GET -pyyntöjä
+// Pyyntöön vastataan response-olion metodilla json, joka lähettää HTTP-pyynnön vastaukseksi parametrina olevaa Javascript-olioa (eli taulukkoa notes) vastaavan JSON-muotoisen merkkijonon. 
+app.get('/notes', (req, res) => {
+    res.json(notes)
+})
+
+const PORT = 3001
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`)
+})
+
+
+// const app = http.createServer((request, response) => {
+//     response.writeHead(200, { 'Content-Type': 'application/json' })
+//     response.end(JSON.stringify(notes))
+// })
 // const app = http.createServer((req, res) => {
 //     res.writeHead(200, { 'Content-Type': 'text/plain' })
 //     res.end('Hello World')
 // })
 
 // Viimeiset rivit sitovat muuttujaan app sijoitetun http-palvelimen kuuntelemaan porttiin 3001 tulevia HTTP-pyyntöjä.
-const port = 3001
-app.listen(port)
-console.log(`Server running on port ${port}`)
+// const port = 3001
+// app.listen(port)
+// console.log(`Server running on port ${port}`)
