@@ -2,6 +2,9 @@
 // Heti alussa otetaan käyttöön express, joka on tällä kertaa funktio, jota kutsumalla luodaan muuttujaan app sijoitettava express-sovellusta vastaava olio
 const express = require('express')
 const app = express()
+const bodyParser = require('body-parser')
+
+app.use(bodyParser.json())
 
 let notes = [
     {
@@ -24,31 +27,68 @@ let notes = [
     }
 
 ]
+const generateId = () => {
+    const maxId = notes.length > 0 ? notes.map(n => n.id).sort().reverse()[0] : 1
+    return maxId + 1
+}
+
+app.post('/notes', (request, response) => {
+    const body = request.body
+    // Jos kenttä content puuttuu, vastataan statuskoodilla 400 bad request
+    // Returnin kutsuminen on tärkeää, jos sitä ei tapahdu, jatkaa koodi suoritusta metodin loppuun asti ja virheellinen muistiinpano tallettuu tietokantaan
+    if (body.content === undefined) {
+        return Response.status(400).json({ error: 'Content missing' })
+    }
+
+    const note = {
+        content: body.content,
+        important: body.important || false,
+        date: new Date(),
+        id: generateId()
+    }
+
+    notes = notes.concat(note)
+
+    response.json(note)
+})
+
+
+// app.post('/notes', (request, response) => {
+//     const note = request.body
+//     console.log(note)
+
+//     response.json(note)
+// })
 
 app.get('/', (req, res) => {
     res.send('<h1>Hello World!</h1>')
 })
 
-app.get('/notes/:id', (request, response) => {
-    const id = Number(request.params.id)
-    // console.log(id)
-    const note = notes.find(note => note.id === id)
-    // console.log(note)
-    if (note) {
-        response.json(note)
-    } else {
-        // Metodin status lisäksi metodia end ilmoittamaan siitä, että pyyntöön tulee vastata ilman dataa
-        response.status(404).end()
-    }
-
+app.get('/notes', (req, res) => {
+    res.json(notes)
 })
 
-app.delete('/notes/:id', (request, response) => {
-    const id = Number(request.params.id)
-    notes = notes.filter(note => note.id !== id)
+// Yksittäisen resurssin haku
+// app.get('/notes/:id', (request, response) => {
+//     const id = Number(request.params.id)
+//     // console.log(id)
+//     const note = notes.find(note => note.id === id)
+//     // console.log(note)
+//     if (note) {
+//         response.json(note)
+//     } else {
+//         // Metodin status lisäksi metodia end ilmoittamaan siitä, että pyyntöön tulee vastata ilman dataa
+//         response.status(404).end()
+//     }
 
-    response.status(204).end()
-})
+// })
+
+// app.delete('/notes/:id', (request, response) => {
+//     const id = Number(request.params.id)
+//     notes = notes.filter(note => note.id !== id)
+
+//     response.status(204).end()
+// })
 
 const PORT = 3001
 app.listen(PORT, () => {
