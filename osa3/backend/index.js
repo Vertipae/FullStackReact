@@ -6,6 +6,7 @@ const bodyParser = require('body-parser')
 
 app.use(bodyParser.json())
 
+
 let notes = [
     {
         id: 1,
@@ -27,6 +28,17 @@ let notes = [
     }
 
 ]
+
+const logger = (request, response, next) => {
+    console.log('Method:', request.method)
+    console.log('Path: ', request.path)
+    console.log('Body: ', request.body)
+    console.log('---')
+    next()
+}
+
+app.use(logger)
+
 const generateId = () => {
     const maxId = notes.length > 0 ? notes.map(n => n.id).sort().reverse()[0] : 1
     return maxId + 1
@@ -67,6 +79,13 @@ app.get('/', (req, res) => {
 app.get('/notes', (req, res) => {
     res.json(notes)
 })
+
+const error = (request, response) => {
+    response.status(404).send({ error: 'unknown endpoint' })
+}
+
+app.use(error)
+
 
 // Yksittäisen resurssin haku
 // app.get('/notes/:id', (request, response) => {
