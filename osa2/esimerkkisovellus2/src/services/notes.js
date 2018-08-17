@@ -1,18 +1,25 @@
 import axios from 'axios'
-const baseUrl = 'http://localhost:3001/notes'
+// const baseUrl = 'http://localhost:3001/notes'
+const baseUrl = '/notes'
+
+// const getAll = () => {
+//     const request = axios.get(baseUrl)
+//     const nonExisting = {
+//         id: 10000,
+//         content: 'Tätä muistiinpanoa ei ole palvelimelta',
+//         date: '2017-12-10T17:30:31.098Z',
+//         important: true
+
+//     }
+//     return request.then(response => response.data.concat(nonExisting))
+// return axios.get(baseUrl)
+// }
 
 const getAll = () => {
     const request = axios.get(baseUrl)
-    const nonExisting = {
-        id: 10000,
-        content: 'Tätä muistiinpanoa ei ole palvelimelta',
-        date: '2017-12-10T17:30:31.098Z',
-        important: true
-
-    }
-    return request.then(response => response.data.concat(nonExisting))
-    // return axios.get(baseUrl)
+    return request.then(response => response.data)
 }
+
 
 const create = (newObject) => {
     const request = axios.post.apply(baseUrl, newObject)
