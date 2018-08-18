@@ -76,14 +76,14 @@ class App extends React.Component {
                 })
             })
 
-        axios.post('http://localhost:3001/notes', noteObject)
-            .then(response => {
-                this.setState({
-                    notes: this.state.notes.concat(response.data),
-                    newNote: ''
-                })
-                // console.log(response)
-            })
+        // axios.post('http://localhost:3001/notes', noteObject)
+        //     .then(response => {
+        //         this.setState({
+        //             notes: this.state.notes.concat(response.data),
+        //             newNote: ''
+        //         })
+        //         // console.log(response)
+        //     })
 
         // const notes = this.state.notes.concat(noteObject)
 
@@ -97,7 +97,7 @@ class App extends React.Component {
     toggleImportanceOf = (id) => {
         return () => {
             // Ensimmäinen rivi määrittelee jokaiselle muistiinpanolle id-kenttään perustuvan yksilöivän url:in.
-            const url = `http://localhost:3001/notes/${id}`
+            // const url = `http://localhost:3001/notes/${id}`
             // Taulukon metodilla find etsitään muutettava muistiinpano ja talletetaan muuttujaan note viite siihen.
             const note = this.state.notes.find(n => n.id === id)
             // Sen jälkeen luodaan uusi olio, jonka sisältö on sama kuin vanhan olion sisältö poislukien kenttä important.

@@ -1,5 +1,6 @@
 
-// Heti alussa otetaan käyttöön express, joka on tällä kertaa funktio, jota kutsumalla luodaan muuttujaan app sijoitettava express-sovellusta vastaava olio
+// Backend
+// Esimerkkisovellus 2 frontend
 const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
@@ -46,7 +47,7 @@ const generateId = () => {
     return maxId + 1
 }
 
-app.post('/notes', (request, response) => {
+app.post('/api/notes', (request, response) => {
     const body = request.body
     // Jos kenttä content puuttuu, vastataan statuskoodilla 400 bad request
     // Returnin kutsuminen on tärkeää, jos sitä ei tapahdu, jatkaa koodi suoritusta metodin loppuun asti ja virheellinen muistiinpano tallettuu tietokantaan
@@ -74,11 +75,11 @@ app.post('/notes', (request, response) => {
 //     response.json(note)
 // })
 
-app.get('/', (req, res) => {
-    res.send('<h1>Hello World!</h1>')
-})
+// app.get('/api/notes', (req, res) => {
+//     res.send('<h1>Hello World!</h1>')
+// })
 
-app.get('/notes', (req, res) => {
+app.get('/api/notes', (req, res) => {
     res.json(notes)
 })
 
@@ -104,12 +105,12 @@ app.use(error)
 
 // })
 
-// app.delete('/notes/:id', (request, response) => {
-//     const id = Number(request.params.id)
-//     notes = notes.filter(note => note.id !== id)
+app.delete('/api/notes/:id', (request, response) => {
+    const id = Number(request.params.id)
+    notes = notes.filter(note => note.id !== id)
 
-//     response.status(204).end()
-// })
+    response.status(204).end()
+})
 
 const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
