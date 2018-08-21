@@ -9,6 +9,39 @@ app.use(express.static('build'))
 app.use(bodyParser.json())
 app.use(cors())
 
+const mongoose = require('mongoose')
+
+require('dotenv').config()
+
+const url = process.env.MONGODB_URI
+mongoose.connect(url)
+
+const Note = mongoose.model('Note', {
+    content: String,
+    date: Date,
+    important: Boolean
+})
+// Apufunktio, jonka avulla yksittäinen muistiinpano saadaan muutettua mongon sisäisestä esitysmuodosta haluamaamme muotoon
+const formatNote = (note) => {
+    return {
+        content: note.content,
+        date: note.date,
+        important: note.important,
+        id: note._id
+    }
+}
+
+// Jos kannasta haettavilla olioilla olisi suuri määrä kenttiä, apufunktio formatNote kannattaisi muotoilla hieman geneerisemmässä muodossa
+// const formatNote = (note) => {
+// Ensimmäinen rivi luo uuden olion, mihin kopioituu kaikki vanhan olion kentät. Uuteen olioon lisätään myös kenttä id:
+//     const formattedNote = { ...note._doc, id: note._id}
+//     delete formattedNote._id
+//     delete formattedNote.__V
+
+//     return formattedNote
+// }
+
+
 
 let notes = [
     {
@@ -79,9 +112,31 @@ app.post('/api/notes', (request, response) => {
 //     res.send('<h1>Hello World!</h1>')
 // })
 
-app.get('/api/notes', (req, res) => {
-    res.json(notes)
+// Palautetaan HTTP-pyynnön vastauksena funktion avulla muotoiltuja oliota
+
+// Nyt siis muuttujassa notes on taulukollinen mongon palauttamia olioita. Kun suoritamme operaation notes.map(formatNote) seurauksena on uusi taulukko
+app.get('/api/notes', (request, response) => {
+    Note
+        .find({})
+        .then(notes => {
+            response.json(notes.map(formatNote))
+        })
 })
+
+// app.get('/api/notes', (req, res) => {
+//     res.json(notes)
+// })
+
+
+// On myös mahdollista estää mongoosea palauttamasta tiettyjen kenttien arvoa, tai pyytää sitä palauttamaan vain tietyt kentät.
+//  Saamme estettyä parametrin __v:n lisäämällä find-metodiin toiseksi parametriksi {__v: 0} seuraavasti:
+// app.get('/api/notes', (request, response) => {
+//     Note
+//     .find({}, {__v: 0})
+//     .then(notes => {
+//         response.json(notes.map(formatNote))
+//     })
+// })
 
 const error = (request, response) => {
     response.status(404).send({ error: 'unknown endpoint' })
