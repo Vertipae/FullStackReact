@@ -76,34 +76,35 @@ app.post('/api/notes', (request, response) => {
     // Jos kenttä content puuttuu, vastataan statuskoodilla 400 bad request
     // Returnin kutsuminen on tärkeää, jos sitä ei tapahdu, jatkaa koodi suoritusta metodin loppuun asti ja virheellinen muistiinpano tallettuu tietokantaan
     if (body.content === undefined) {
-        return Response.status(400).json({ error: 'Content missing' })
+        return response.status(400).json({ error: 'Content missing' })
     }
-
-    const note = {
+    // Luodaan uusi muistiinpano
+    // Muistiinpano-oliot siis luodaan Note-konstruktorifunktiolla. Pyyntöön vastataan save-operaation takaisinkutsufunktion sisällä.
+    const note = new Note({
         content: body.content,
         important: body.important || false,
-        date: new Date(),
-        id: generateId()
-    }
+        date: new Date()
+    })
 
-    notes = notes.concat(note)
+    note
+        .save()
+        .then(savedNote => {
+            response.json(formatNote(savedNote))
+        })
 
-    response.json(note)
+    // const note = {
+    //     content: body.content,
+    //     important: body.important || false,
+    //     date: new Date(),
+    //     id: generateId()
+    // }
+
+    // notes = notes.concat(note)
+
+    // response.json(note)
 })
 
 
-// app.post('/notes', (request, response) => {
-//     const note = request.body
-//     console.log(note)
-
-//     response.json(note)
-// })
-
-// app.get('/api/notes', (req, res) => {
-//     res.send('<h1>Hello World!</h1>')
-// })
-
-// Palautetaan HTTP-pyynnön vastauksena funktion avulla muotoiltuja oliota
 
 // Nyt siis muuttujassa notes on taulukollinen mongon palauttamia olioita. Kun suoritamme operaation notes.map(formatNote) seurauksena on uusi taulukko
 app.get('/api/notes', (request, response) => {
@@ -114,28 +115,18 @@ app.get('/api/notes', (request, response) => {
         })
 })
 
-// app.get('/api/notes', (req, res) => {
-//     res.json(notes)
-// })
 
 
-// On myös mahdollista estää mongoosea palauttamasta tiettyjen kenttien arvoa, tai pyytää sitä palauttamaan vain tietyt kentät.
-//  Saamme estettyä parametrin __v:n lisäämällä find-metodiin toiseksi parametriksi {__v: 0} seuraavasti:
-// app.get('/api/notes', (request, response) => {
-//     Note
-//     .find({}, {__v: 0})
-//     .then(notes => {
-//         response.json(notes.map(formatNote))
-//     })
-// })
 
-const error = (request, response) => {
-    response.status(404).send({ error: 'unknown endpoint' })
-}
-
-app.use(error)
-
-
+// Yksittäisen muistiinpanon tarkastelu muuttuu muotoon
+app.get('/api/notes/:id', (request, response) => {
+    console.log(request)
+    Note
+        .findById(request.params.id)
+        .then(note => {
+            response.json(formatNote(note))
+        })
+})
 // Yksittäisen resurssin haku
 // app.get('/notes/:id', (request, response) => {
 //     const id = Number(request.params.id)
@@ -157,6 +148,13 @@ app.delete('/api/notes/:id', (request, response) => {
 
     response.status(204).end()
 })
+
+// Viimeiseksi koska muuten ei löydä kaikkia polkuja
+const error = (request, response) => {
+    response.status(404).send({ error: 'unknown endpoint' })
+}
+
+app.use(error)
 
 const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
