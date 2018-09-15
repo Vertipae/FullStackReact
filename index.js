@@ -8,28 +8,11 @@ const cors = require('cors')
 app.use(express.static('build'))
 app.use(bodyParser.json())
 app.use(cors())
-
-const mongoose = require('mongoose')
-
 require('dotenv').config()
 
-const url = process.env.MONGODB_URI
-mongoose.connect(url)
+const Note = require('./models/note')
 
-const Note = mongoose.model('Note', {
-    content: String,
-    date: Date,
-    important: Boolean
-})
-// Apufunktio, jonka avulla yksittäinen muistiinpano saadaan muutettua mongon sisäisestä esitysmuodosta haluamaamme muotoon
-const formatNote = (note) => {
-    return {
-        content: note.content,
-        date: note.date,
-        important: note.important,
-        id: note._id
-    }
-}
+
 
 // Jos kannasta haettavilla olioilla olisi suuri määrä kenttiä, apufunktio formatNote kannattaisi muotoilla hieman geneerisemmässä muodossa
 // const formatNote = (note) => {
@@ -41,7 +24,15 @@ const formatNote = (note) => {
 //     return formattedNote
 // }
 
-
+// Apufunktio, jonka avulla yksittäinen muistiinpano saadaan muutettua mongon sisäisestä esitysmuodosta haluamaamme muotoon
+const formatNote = (note) => {
+    return {
+        content: note.content,
+        date: note.date,
+        important: note.important,
+        id: note._id
+    }
+}
 
 let notes = [
     {

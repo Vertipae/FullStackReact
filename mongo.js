@@ -1,3 +1,5 @@
+// Ei tarvita ennää tätä pätkää koodista
+
 const mongoose = require('mongoose')
 require('dotenv').config()
 
